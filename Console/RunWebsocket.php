@@ -110,7 +110,7 @@ class RunWebsocket extends Command
             ->websocketServer
             ->createServer(
                 $host,
-                $port,
+                (int) $port,
                 $input->getOption('route'),
                 $outputPrinter
             );

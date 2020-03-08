@@ -54,17 +54,17 @@ class RouteFunctionalTest extends WebsocketFunctionalTest
         $loop = $this->get('reactphp.event_loop');
         $inputServer = new InputStream();
         $websocketServer = $this->createSocketServer('8001', $inputServer);
-        usleep(500000);
+        sleep(1);
         $input1 = new InputStream();
         $conn1 = $this->connectToSocket('8001', $input1);
         $input2 = new InputStream();
         $conn2 = $this->connectToSocket('8001', $input2);
-        usleep(500000);
+        sleep(1);
 
         $promise = $this->get('drit.event_bus.public')->dispatch(new TestEvent());
         await($promise, $loop);
-        usleep(500000);
-
+        sleep(1);
+var_dump($websocketServer->getErrorOutput());
         $this->assertContains('opened on route main', $websocketServer->getOutput());
         $this->assertContains('TestEvent', $websocketServer->getOutput());
 
