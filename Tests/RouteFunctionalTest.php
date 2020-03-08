@@ -64,7 +64,7 @@ class RouteFunctionalTest extends WebsocketFunctionalTest
         $promise = $this->get('drit.event_bus.public')->dispatch(new TestEvent());
         await($promise, $loop);
         sleep(1);
-var_dump($websocketServer->getErrorOutput());
+
         $this->assertContains('opened on route main', $websocketServer->getOutput());
         $this->assertContains('TestEvent', $websocketServer->getOutput());
 
