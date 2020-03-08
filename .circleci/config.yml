@@ -21,13 +21,6 @@ jobs:
             rm -Rf var/*
             php vendor/bin/phpunit
 
-      - run:
-          name: Run tests / Symfony 5^0
-          command: |
-            composer update -n --prefer-dist --no-suggest
-            rm -Rf var/*
-            php vendor/bin/phpunit
-
 
   test-php74:
     docker:
