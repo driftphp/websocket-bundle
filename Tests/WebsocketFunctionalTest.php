@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Drift\Websocket\Tests;
 
-use Drift\AMQP\AMQPBundle;
 use Drift\EventBus\Bus\EventBus;
 use Drift\Websocket\WebsocketBundle;
 use Mmoreram\BaseBundle\Kernel\DriftBaseKernel;
@@ -64,13 +63,6 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
                     'alias' => EventBus::class,
                 ],
             ],
-            'amqp' => [
-                'clients' => [
-                    'main' => [
-                        'host' => 'localhost',
-                    ],
-                ],
-            ],
             'event_bus' => [
                 'exchanges' => [
                     'events' => 'events',
@@ -78,7 +70,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
                 'async_adapter' => [
                     'adapter' => 'amqp',
                     'amqp' => [
-                        'client' => 'main',
+                        'host' => 'localhost',
                     ],
                 ],
             ],
@@ -94,8 +86,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
         return new DriftBaseKernel(
             [
                 FrameworkBundle::class,
-                WebsocketBundle::class,
-                AMQPBundle::class,
+                WebsocketBundle::class
             ],
             static::decorateConfiguration($configuration),
             [],
@@ -119,38 +110,32 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
      * Create socket server.
      *
      * @param string $port
-     * @param mixed  $input
      *
      * @return Process
      */
-    protected function createSocketServer(
-        string $port,
-        $input
-    ): Process {
+    protected function createSocketServer(string $port): Process
+    {
         return static::runAsyncCommand([
             'websocket:run',
             'localhost:'.$port,
             '--route=main',
             '--exchange=events',
-        ], $input);
+        ]);
     }
 
     /**
      * Connect to socket.
      *
      * @param string $port
-     * @param mixed  $input
      *
      * @return Process
      */
-    protected function connectToSocket(
-        string $port,
-        $input
-    ): Process {
+    protected function connectToSocket(string $port): Process
+    {
         return static::runAsyncCommand([
             'websocket:connect',
             'ws://localhost:'.$port,
-        ], $input);
+        ]);
     }
 
     /**
