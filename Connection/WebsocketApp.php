@@ -17,6 +17,7 @@ namespace Drift\Websocket\Connection;
 
 use Drift\Console\OutputPrinter;
 use Drift\EventBus\Bus\InlineEventBus;
+use Drift\Websocket\Console\ConsoleWebsocketMessage;
 use Drift\Websocket\Event\WebsocketConnectionClosed;
 use Drift\Websocket\Event\WebsocketConnectionError;
 use Drift\Websocket\Event\WebsocketConnectionOpened;
@@ -85,13 +86,11 @@ class WebsocketApp implements MessageComponentInterface
         $this->eventBus->dispatch($event);
 
         if ($this->outputPrinter) {
-            $this
-                ->outputPrinter
-                ->printLine(sprintf(
-                    'Connection %s opened on route %s',
-                    spl_object_hash($connection),
-                    $this->name
-                ));
+            (new ConsoleWebsocketMessage(sprintf(
+                'Connection %s opened on route %s',
+                spl_object_hash($connection),
+                $this->name
+            ), '~', true))->print($this->outputPrinter);
         }
     }
 
@@ -105,13 +104,11 @@ class WebsocketApp implements MessageComponentInterface
         $this->eventBus->dispatch($event);
 
         if ($this->outputPrinter) {
-            $this
-                ->outputPrinter
-                ->printLine(sprintf(
-                    'Connection %s closed from route %s',
-                    spl_object_hash($connection),
-                    $this->name
-                ));
+            (new ConsoleWebsocketMessage(sprintf(
+                'Connection %s closed from route %s',
+                spl_object_hash($connection),
+                $this->name
+            ), '~', true))->print($this->outputPrinter);
         }
     }
 
@@ -124,13 +121,11 @@ class WebsocketApp implements MessageComponentInterface
         $this->eventBus->dispatch($event);
 
         if ($this->outputPrinter) {
-            $this
-                ->outputPrinter
-                ->printLine(sprintf(
-                    'Connection %s throw error on route %s',
-                    spl_object_hash($connection),
-                    $this->name
-                ));
+            (new ConsoleWebsocketMessage(sprintf(
+                'Connection %s throw error on route %s',
+                spl_object_hash($connection),
+                $this->name
+            ), '~', true))->print($this->outputPrinter);
         }
     }
 
@@ -143,14 +138,12 @@ class WebsocketApp implements MessageComponentInterface
         $this->eventBus->dispatch($event);
 
         if ($this->outputPrinter) {
-            $this
-                ->outputPrinter
-                ->printLine(sprintf(
-                    'Message from connection %s on route %s - %s',
-                    spl_object_hash($from),
-                    $this->name,
-                    $message
-                ));
+            (new ConsoleWebsocketMessage(sprintf(
+                'Message from connection %s on route %s - %s',
+                spl_object_hash($from),
+                $this->name,
+                $message
+            ), '~', true))->print($this->outputPrinter);
         }
     }
 }

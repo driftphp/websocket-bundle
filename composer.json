@@ -19,6 +19,7 @@
 
         "drift/http-kernel": "0.1.*, >=0.1.7",
         "drift/event-bus-bundle": "0.1.*, >=0.1.4",
+        "drift/event-loop-utils": "0.1.*",
         "mmoreram/base-bundle": "^2.1.2",
 
         "cboden/ratchet": "^0.4",

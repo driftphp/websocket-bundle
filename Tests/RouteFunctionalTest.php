@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Drift\Websocket\Tests;
 
 use function Clue\React\Block\await;
-use Symfony\Component\Process\InputStream;
 
 /**
  * Class RouteFunctionalTest.

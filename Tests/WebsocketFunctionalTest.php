@@ -86,7 +86,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
         return new DriftBaseKernel(
             [
                 FrameworkBundle::class,
-                WebsocketBundle::class
+                WebsocketBundle::class,
             ],
             static::decorateConfiguration($configuration),
             [],

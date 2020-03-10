@@ -17,6 +17,7 @@ namespace Drift\Websocket\Console;
 
 use Drift\Console\OutputPrinter;
 use Drift\EventBus\Subscriber\EventBusSubscriber;
+use Drift\EventLoop\EventLoopUtils;
 use Drift\Websocket\Connection\WebsocketServer;
 use React\EventLoop\LoopInterface;
 use Symfony\Component\Console\Command\Command;
@@ -120,7 +121,19 @@ class RunWebsocket extends Command
             $outputPrinter
         );
 
-        $this->loop->run();
+        (new ConsoleWebsocketMessage('Kernel built.', '~', true))->print($outputPrinter);
+        (new ConsoleWebsocketMessage('Kernel preloaded.', '~', true))->print($outputPrinter);
+        (new ConsoleWebsocketMessage('Kernel ready to accept websocket connections.', '~', true))->print($outputPrinter);
+
+        if (!empty($input->getOption('exchange'))) {
+            (new ConsoleWebsocketMessage('Kernel connected to exchanges.', '~', true))->print($outputPrinter);
+        }
+
+        EventLoopUtils::runLoop($this->loop, 2);
+
+        (new ConsoleWebsocketMessage('The EventLoop stopped.', '~', false))->print($outputPrinter);
+        (new ConsoleWebsocketMessage('The websocket server will shut down.', '~', false))->print($outputPrinter);
+        (new ConsoleWebsocketMessage('Bye!', '~', false))->print($outputPrinter);
 
         return 0;
     }
