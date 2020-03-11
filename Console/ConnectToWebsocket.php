@@ -86,7 +86,6 @@ class ConnectToWebsocket extends Command
                 });
 
                 $stdio->on('data', function ($data) use ($connection, $stdio) {
-                    echo 'LOL';
                     $connection->send($data);
                 });
             })

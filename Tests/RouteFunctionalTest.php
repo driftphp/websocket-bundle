@@ -38,6 +38,9 @@ class RouteFunctionalTest extends WebsocketFunctionalTest
                 'main' => [
                     'path' => '/',
                 ],
+                'another' => [
+                    'path' => '/another/',
+                ],
             ],
         ];
 
@@ -61,8 +64,12 @@ class RouteFunctionalTest extends WebsocketFunctionalTest
         await($promise, $loop);
         sleep(1);
 
-        $this->assertContains('opened on route main', $websocketServer->getOutput());
+        $this->assertContains('Opened connection', $websocketServer->getOutput());
         $this->assertContains('TestEvent', $websocketServer->getOutput());
+        $this->assertContains('Exchanges subscribed: events', $websocketServer->getOutput());
+        $this->assertContains('Routes: main, another', $websocketServer->getOutput());
+        $this->assertContains('Port: 8001', $websocketServer->getOutput());
+        $this->assertContains('Host: localhost', $websocketServer->getOutput());
 
         $this->assertContains('Opened connection', $conn1->getOutput());
         $this->assertContains(TestEvent::class, $conn1->getOutput());

@@ -50,12 +50,31 @@ class WebsocketHeaderPrinter
         $outputPrinter->printHeaderLine("Port: $port");
         $outputPrinter->printHeaderLine("Environment: {$input->getOption('env')}");
         $outputPrinter->printHeaderLine('Debug: '.($input->getOption('no-debug') ? 'disabled' : 'enabled'));
+        $outputPrinter->printHeaderLine('Routes: '.(!empty($input->getOption('route'))
+                ? implode(', ', static::getPlainRoutes($input))
+                : 'disabled'
+            ));
         $outputPrinter->printHeaderLine('Exchanges subscribed: '.(!empty($input->getOption('exchange'))
                 ? implode(', ', static::getPlainExchanges($input))
                 : 'disabled'
             ));
         $outputPrinter->printHeaderLine();
         $outputPrinter->printLine();
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return array
+     */
+    public static function getPlainRoutes(InputInterface $input): array
+    {
+        $array = [];
+        foreach ($input->getOption('route') as $route) {
+            $array[] = trim($route);
+        }
+
+        return $array;
     }
 
     /**

@@ -87,8 +87,8 @@ class WebsocketApp implements MessageComponentInterface
 
         if ($this->outputPrinter) {
             (new ConsoleWebsocketMessage(sprintf(
-                'Connection %s opened on route %s',
-                spl_object_hash($connection),
+                'Connection %s - %s - Opened connection',
+                Connection::getConnectionHash($connection),
                 $this->name
             ), '~', true))->print($this->outputPrinter);
         }
@@ -105,8 +105,8 @@ class WebsocketApp implements MessageComponentInterface
 
         if ($this->outputPrinter) {
             (new ConsoleWebsocketMessage(sprintf(
-                'Connection %s closed from route %s',
-                spl_object_hash($connection),
+                'Connection %s - %s - Closed connection',
+                Connection::getConnectionHash($connection),
                 $this->name
             ), '~', true))->print($this->outputPrinter);
         }
@@ -122,8 +122,8 @@ class WebsocketApp implements MessageComponentInterface
 
         if ($this->outputPrinter) {
             (new ConsoleWebsocketMessage(sprintf(
-                'Connection %s throw error on route %s',
-                spl_object_hash($connection),
+                'Connection %s - %s - Error thrown',
+                Connection::getConnectionHash($connection),
                 $this->name
             ), '~', true))->print($this->outputPrinter);
         }
@@ -139,10 +139,10 @@ class WebsocketApp implements MessageComponentInterface
 
         if ($this->outputPrinter) {
             (new ConsoleWebsocketMessage(sprintf(
-                'Message from connection %s on route %s - %s',
-                spl_object_hash($from),
+                'Connection %s - %s - Messaged "%s"',
+                Connection::getConnectionHash($from),
                 $this->name,
-                $message
+                trim($message, " \ \t\n\r\0\x0B")
             ), '~', true))->print($this->outputPrinter);
         }
     }
