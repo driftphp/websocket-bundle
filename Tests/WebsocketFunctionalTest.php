@@ -119,6 +119,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
             'websocket:run',
             'localhost:'.$port,
             '--route=main',
+            '--route=another',
             '--exchange=events',
         ]);
     }
