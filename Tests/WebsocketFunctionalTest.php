@@ -23,6 +23,7 @@ use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
 /**
@@ -120,6 +121,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
             'localhost:'.$port,
             '--route=main',
             '--route=another',
+            '--route=auth',
             '--exchange=events',
         ]);
     }
@@ -128,15 +130,26 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
      * Connect to socket.
      *
      * @param string $port
+     * @param string $path
      *
-     * @return Process
+     * @return array
      */
-    protected function connectToSocket(string $port): Process
-    {
-        return static::runAsyncCommand([
+    protected function connectToSocket(
+        string $port,
+        string $path = '/'
+    ): array {
+        $reflectionClass = new \ReflectionClass(Process::class);
+        $property = $reflectionClass->getProperty('processPipes');
+        $property->setAccessible(true);
+
+        $process = static::runAsyncCommand([
             'websocket:connect',
-            'ws://localhost:'.$port,
-        ]);
+            'ws://localhost:'.$port.$path,
+        ], new InputStream());
+
+        $stdin = $property->getValue($process)->pipes[0];
+
+        return [$process, $stdin];
     }
 
     /**

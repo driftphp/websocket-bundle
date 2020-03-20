@@ -17,6 +17,7 @@ namespace Drift\Websocket\Console;
 
 use Clue\React\Stdio\Stdio;
 use Drift\Console\OutputPrinter;
+use Drift\EventLoop\EventLoopUtils;
 use function Ratchet\Client\connect;
 use Ratchet\Client\WebSocket;
 use React\EventLoop\LoopInterface;
@@ -76,28 +77,30 @@ class ConnectToWebsocket extends Command
     {
         $outputPrinter = new OutputPrinter($output);
         $stdio = new Stdio($this->loop);
+        $stdio->setPrompt(' > ');
         $path = $input->getArgument('path');
 
         connect($path, [], [], $this->loop)
             ->then(function (WebSocket $connection) use ($outputPrinter, $path, $stdio) {
-                $outputPrinter->printHeaderLine('Connected to websocket on path - '.$path);
+                $outputPrinter->printLine('Connected to websocket on path - '.$path);
+
                 $connection->on('message', function ($message) use ($outputPrinter) {
-                    $outputPrinter->printLine(': '.$message);
+                    $outputPrinter->printLine('Someone > '.$message);
                 });
 
-                $stdio->on('data', function ($data) use ($connection, $stdio) {
+                $stdio->on('data', function ($data) use ($connection, $stdio, $outputPrinter) {
                     $connection->send($data);
                 });
             })
             ->otherwise(function (\Exception $exception) use ($outputPrinter, $path) {
-                $outputPrinter->printHeaderLine(sprintf(
-                    '> Failed to connect websocket on path - %s. Reason was %s',
+                $outputPrinter->printLine(sprintf(
+                    'Failed to connect websocket on path - %s. Reason was %s',
                     $path,
                     $exception->getMessage()
                 ));
             });
 
-        $this->loop->run();
+        EventLoopUtils::runLoop($this->loop, 2);
 
         return 0;
     }

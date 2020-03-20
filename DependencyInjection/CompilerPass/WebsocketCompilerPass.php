@@ -88,6 +88,8 @@ class WebsocketCompilerPass implements CompilerPassInterface
             $routeName,
             new Reference($connectionsName),
             new Reference(InlineEventBus::class),
+            new Reference(LoopInterface::class),
+            $config['auth'],
         ]));
         $container->registerAliasForArgument($appName, WebsocketApp::class, $appParameter);
 

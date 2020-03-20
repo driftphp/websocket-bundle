@@ -47,6 +47,18 @@ class Connections
     }
 
     /**
+     * Has connection.
+     *
+     * @param ConnectionInterface $connection
+     *
+     * @return bool
+     */
+    public function hasConnection(ConnectionInterface $connection): bool
+    {
+        return $this->connections->contains($connection);
+    }
+
+    /**
      * Remove connection.
      *
      * @param ConnectionInterface $connection

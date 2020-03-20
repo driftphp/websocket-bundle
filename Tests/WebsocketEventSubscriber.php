@@ -16,9 +16,11 @@ declare(strict_types=1);
 namespace Drift\Websocket\Tests;
 
 use Drift\Websocket\Connection\Connections;
+use Drift\Websocket\Event\WebsocketConnectionAuth;
 use Drift\Websocket\Event\WebsocketConnectionClosed;
 use Drift\Websocket\Event\WebsocketConnectionOpened;
 use Drift\Websocket\Event\WebsocketMessageReceived;
+use Drift\Websocket\Exception\WebsocketAuthException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -48,6 +50,7 @@ class WebsocketEventSubscriber implements EventSubscriberInterface
     {
         $route = $event->getRoute();
         $message = 'Opened connection on route '.$route;
+
         $event
             ->getConnections()
             ->broadcast($message);
@@ -92,6 +95,26 @@ class WebsocketEventSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param WebsocketConnectionAuth $event
+     *
+     * @throws WebsocketAuthException
+     */
+    public function onAutentication(WebsocketConnectionAuth $event)
+    {
+        $message = $event->getMessage();
+        $message = json_decode($message, true);
+
+        if (
+            $message === ['root', 'engonga'] ||
+            $message === ['raat', 'anganga']
+        ) {
+            return;
+        }
+
+        throw new WebsocketAuthException();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -101,6 +124,7 @@ class WebsocketEventSubscriber implements EventSubscriberInterface
             WebsocketConnectionOpened::class => [['onConnectionOpened', 0]],
             WebsocketConnectionClosed::class => [['onConnectionClosed', 0]],
             WebsocketMessageReceived::class => [['onMessageReceived', 0]],
+            WebsocketConnectionAuth::class => [['onAutentication', 0]],
         ];
     }
 }

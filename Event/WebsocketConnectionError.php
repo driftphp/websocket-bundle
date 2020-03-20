@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Drift\Websocket\Event;
 
-use App\Connections;
+use Drift\Websocket\Connection\Connections;
 use Exception;
 use Ratchet\ConnectionInterface;
 
