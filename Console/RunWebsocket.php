@@ -97,7 +97,7 @@ class RunWebsocket extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $outputPrinter = new OutputPrinter($output);
+        $outputPrinter = new OutputPrinter($output, false, false);
         list($host, $port) = explode(':', $input->getArgument('path'));
 
         WebsocketHeaderPrinter::print(

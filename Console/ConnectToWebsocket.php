@@ -74,7 +74,7 @@ class ConnectToWebsocket extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $outputPrinter = new OutputPrinter($output);
+        $outputPrinter = new OutputPrinter($output, false, false);
         $stdio = new Stdio($this->loop);
         $path = $input->getArgument('path');
 
