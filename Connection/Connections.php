@@ -23,10 +23,7 @@ use SplObjectStorage;
  */
 class Connections
 {
-    /**
-     * @var SplObjectStorage
-     */
-    private $connections;
+    private SplObjectStorage $connections;
 
     /**
      * Connections constructor.

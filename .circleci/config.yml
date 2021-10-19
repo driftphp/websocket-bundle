@@ -15,10 +15,26 @@ jobs:
           command: |
             composer update -n --prefer-dist --no-suggest
             rm -Rf var/*
-            php vendor/bin/phpunit
+            sh .circleci/start.sh
 
+  test-php80:
+    docker:
+      - image: circleci/php:8.0-cli
+      - image: rabbitmq
+
+    working_directory: ~/project
+    steps:
+      - checkout
+
+      - run:
+          name: Run tests / Symfony 5^0
+          command: |
+            composer update -n --prefer-dist --no-suggest
+            rm -Rf var/*
+            sh .circleci/start.sh
 workflows:
   version: 2
   test:
     jobs:
       - test-php74
+      - test-php80

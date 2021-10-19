@@ -24,15 +24,8 @@ use React\EventLoop\LoopInterface;
  */
 class WebsocketServer
 {
-    /**
-     * @var LoopInterface
-     */
-    private $loop;
-
-    /**
-     * @var WebsocketApps
-     */
-    private $apps;
+    private LoopInterface $loop;
+    private WebsocketApps $apps;
 
     /**
      * WebsocketServer constructor.
@@ -53,6 +46,7 @@ class WebsocketServer
      * @param int           $port
      * @param OutputPrinter $outputPrinter
      * @param string[]      $connectionsName
+     * @param bool          $broadcast
      * @param string        $address
      */
     public function createServer(
@@ -60,6 +54,7 @@ class WebsocketServer
         int $port,
         array $connectionsName,
         OutputPrinter $outputPrinter,
+        bool $broadcast,
         string $address = '0.0.0.0'
     ) {
         $server = new App($httpHost, $port, $address, $this->loop);
@@ -69,6 +64,10 @@ class WebsocketServer
 
         foreach ($apps as list($app, $configuration)) {
             $app->setOutputPrinter($outputPrinter);
+            if ($broadcast) {
+                $app->broadcast();
+            }
+
             $server->route(
                 $configuration['path'],
                 $app,

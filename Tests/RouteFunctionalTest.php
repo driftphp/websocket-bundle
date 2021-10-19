@@ -57,24 +57,25 @@ class RouteFunctionalTest extends WebsocketFunctionalTest
         $websocketServer = $this->createSocketServer('8001');
         sleep(1);
         $conn1 = $this->connectToSocket('8001');
+        sleep(2);
         $conn2 = $this->connectToSocket('8001');
-        sleep(1);
+        sleep(2);
 
         $promise = $this->get('drit.event_bus.public')->dispatch(new TestEvent());
         await($promise, $loop);
         sleep(1);
 
-        $this->assertContains('Opened connection', $websocketServer->getOutput());
-        $this->assertContains('TestEvent', $websocketServer->getOutput());
-        $this->assertContains('Exchanges subscribed: events', $websocketServer->getOutput());
-        $this->assertContains('Routes: main, another', $websocketServer->getOutput());
-        $this->assertContains('Port: 8001', $websocketServer->getOutput());
-        $this->assertContains('Host: localhost', $websocketServer->getOutput());
+        $this->assertStringContainsString('Opened connection', $websocketServer->getOutput());
+        $this->assertStringContainsString('TestEvent', $websocketServer->getOutput());
+        $this->assertStringContainsString('Exchanges subscribed: events', $websocketServer->getOutput());
+        $this->assertStringContainsString('Routes: main, another', $websocketServer->getOutput());
+        $this->assertStringContainsString('Port: 8001', $websocketServer->getOutput());
+        $this->assertStringContainsString('Host: localhost', $websocketServer->getOutput());
 
-        $this->assertContains('Opened connection', $conn1->getOutput());
-        $this->assertContains(TestEvent::class, $conn1->getOutput());
-        $this->assertContains('Opened connection', $conn2->getOutput());
-        $this->assertContains(TestEvent::class, $conn2->getOutput());
+        $this->assertStringContainsString('Opened connection', $conn1->getOutput());
+        $this->assertStringContainsString(TestEvent::class, $conn1->getOutput());
+        $this->assertStringContainsString('Opened connection', $conn2->getOutput());
+        $this->assertStringContainsString(TestEvent::class, $conn2->getOutput());
 
         $websocketServer->stop();
         $conn1->stop();

@@ -84,7 +84,8 @@ class RunWebsocket extends Command
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Exchanges to listen'
-            );
+            )
+            ->addOption('broadcast', null, InputOption::VALUE_NONE, 'The server broadcasts messages to all connections');
     }
 
     /**
@@ -113,7 +114,8 @@ class RunWebsocket extends Command
                 $host,
                 (int) $port,
                 $input->getOption('route'),
-                $outputPrinter
+                $outputPrinter,
+                \boolval($input->getOption('broadcast')),
             );
 
         $this->eventBusSubscriber->subscribeToExchanges(

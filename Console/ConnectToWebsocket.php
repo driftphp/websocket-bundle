@@ -23,7 +23,6 @@ use React\EventLoop\LoopInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -35,11 +34,7 @@ class ConnectToWebsocket extends Command
      * @var string
      */
     protected static $defaultName = 'websocket:connect';
-
-    /**
-     * @var LoopInterface
-     */
-    private $loop;
+    private LoopInterface $loop;
 
     /**
      * RunWebsocket constructor.
@@ -60,8 +55,7 @@ class ConnectToWebsocket extends Command
     {
         $this
             ->setDescription('Run the websocket')
-            ->addArgument('path', InputArgument::REQUIRED, 'The server will start listening to this address')
-            ->addOption('route', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Routes to listen');
+            ->addArgument('path', InputArgument::REQUIRED, 'The server will start listening to this address');
     }
 
     /**
