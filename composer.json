@@ -11,14 +11,14 @@
     ],
 
     "require": {
-        "php": "^7.3",
+        "php": "^7.4 | ^8.0",
 
-        "symfony/console": "^5.0.0",
-        "symfony/framework-bundle": "^5.0.0",
-        "clue/stdio-react": "^2.0",
+        "symfony/console": "^5",
+        "symfony/framework-bundle": "^5",
+        "clue/stdio-react": "^2",
 
-        "drift/http-kernel": "0.1.*, >=0.1.7",
-        "drift/event-bus-bundle": "0.1.*, >=0.1.4",
+        "drift/http-kernel": "^0.1.7",
+        "drift/event-bus-bundle": "^0.1.4",
         "drift/event-loop-utils": "0.1.*",
         "mmoreram/base-bundle": "^2.1.2",
 
@@ -27,8 +27,8 @@
     },
 
     "require-dev": {
-        "phpunit/phpunit": "7.5.17",
-        "drift/amqp-bundle": "0.1.*, >=0.1.2",
+        "phpunit/phpunit": "^9",
+        "drift/amqp-bundle": "^0.1.2",
         "symfony/process":  "^5.0"
     },
 

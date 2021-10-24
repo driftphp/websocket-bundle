@@ -67,6 +67,9 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
                 'exchanges' => [
                     'events' => 'events',
                 ],
+                'router' => [
+                    '_all' => 'events',
+                ],
                 'async_adapter' => [
                     'adapter' => 'amqp',
                     'amqp' => [
@@ -135,7 +138,7 @@ abstract class WebsocketFunctionalTest extends BaseFunctionalTest
     {
         return static::runAsyncCommand([
             'websocket:connect',
-            'ws://localhost:'.$port,
+            'ws://localhost:'.$port.'/',
         ]);
     }
 

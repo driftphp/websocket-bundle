@@ -20,10 +20,7 @@ namespace Drift\Websocket\Connection;
  */
 class WebsocketApps
 {
-    /**
-     * @var array
-     */
-    private $apps = [];
+    private array $apps = [];
 
     /**
      * Add app.

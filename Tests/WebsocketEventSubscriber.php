@@ -26,10 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class WebsocketEventSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Connections
-     */
-    private $connections;
+    private Connections $connections;
 
     /**
      * WebsocketEventSubscriber constructor.

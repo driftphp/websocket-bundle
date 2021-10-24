@@ -31,25 +31,11 @@ use Ratchet\MessageComponentInterface;
  */
 class WebsocketApp implements MessageComponentInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var Connections
-     */
-    private $connections;
-
-    /**
-     * @var InlineEventBus
-     */
-    private $eventBus;
-
-    /**
-     * @var OutputPrinter
-     */
-    private $outputPrinter;
+    private string $name;
+    private Connections $connections;
+    private InlineEventBus $eventBus;
+    private OutputPrinter $outputPrinter;
+    private bool $broadcast = false;
 
     /**
      * WebsocketsApp constructor.
@@ -74,6 +60,11 @@ class WebsocketApp implements MessageComponentInterface
     public function setOutputPrinter(OutputPrinter $outputPrinter): void
     {
         $this->outputPrinter = $outputPrinter;
+    }
+
+    public function broadcast(): void
+    {
+        $this->broadcast = true;
     }
 
     /**
@@ -136,6 +127,7 @@ class WebsocketApp implements MessageComponentInterface
     {
         $event = new WebsocketMessageReceived($this->name, $this->connections, $from, $message);
         $this->eventBus->dispatch($event);
+        $message = trim($message, " \ \t\n\r\0\x0B");
 
         if ($this->outputPrinter) {
             (new ConsoleWebsocketMessage(sprintf(
@@ -144,6 +136,10 @@ class WebsocketApp implements MessageComponentInterface
                 $this->name,
                 trim($message, " \ \t\n\r\0\x0B")
             ), '~', true))->print($this->outputPrinter);
+
+            if ($this->broadcast) {
+                $this->connections->broadcast($message, $from);
+            }
         }
     }
 }
